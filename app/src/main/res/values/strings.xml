@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Weather Widget</string>
+    <string name="widget_description">Current weather and 4-day forecast</string>
+</resources>

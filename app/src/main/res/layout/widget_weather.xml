@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="0dp">
+
+    <!-- Current weather (left section) — wrap_content so it only takes what it needs -->
+    <LinearLayout
+        android:layout_width="95dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingEnd="4dp">
+
+        <ImageView
+            android:id="@+id/current_icon"
+            android:layout_width="@dimen/current_icon_size"
+            android:layout_height="@dimen/current_icon_size"
+            android:contentDescription="Current weather"
+            android:src="@drawable/ic_weather_clear" />
+
+        <TextView
+            android:id="@+id/current_temp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="--"
+            android:textColor="@color/widget_text_primary"
+            android:textSize="@dimen/current_temp_size"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <!-- Divider wrapper -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="1dp"
+            android:layout_height="56dp"
+            android:background="@color/widget_divider"
+            android:contentDescription="divider" />
+
+    </LinearLayout>
+
+    <!-- Forecast (right section) — takes remaining space -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:paddingStart="4dp">
+
+        <!-- Day 1 (Today) -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/day1_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Today"
+                android:textColor="@color/widget_text_primary"
+                android:textSize="@dimen/forecast_text_size" />
+
+            <ImageView
+                android:id="@+id/day1_icon"
+                android:layout_width="@dimen/forecast_icon_size"
+                android:layout_height="@dimen/forecast_icon_size"
+                android:layout_marginTop="4dp"
+                android:contentDescription="Day 1 weather"
+                android:src="@drawable/ic_weather_clear" />
+
+            <TextView
+                android:id="@+id/day1_high"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="--"
+                android:textColor="@color/widget_text_primary"
+                android:textSize="@dimen/forecast_text_size" />
+
+            <TextView
+                android:id="@+id/day1_low"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="--"
+                android:textColor="@color/widget_text_secondary"
+                android:textSize="@dimen/forecast_low_text_size" />
+
+        </LinearLayout>
+
+        <!-- Day 2 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/day2_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tue"
+                android:textColor="@color/widget_text_primary"
+                android:textSize="@dimen/forecast_text_size" />
+
+            <ImageView
+                android:id="@+id/day2_icon"
+                android:layout_width="@dimen/forecast_icon_size"
+                android:layout_height="@dimen/forecast_icon_size"
+                android:layout_marginTop="4dp"
+                android:contentDescription="Day 2 weather"
+                android:src="@drawable/ic_weather_clear" />
+
+            <TextView
+                android:id="@+id/day2_high"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="--"
+                android:textColor="@color/widget_text_primary"
+                android:textSize="@dimen/forecast_text_size" />
+
+            <TextView
+                android:id="@+id/day2_low"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="--"
+                android:textColor="@color/widget_text_secondary"
+                android:textSize="@dimen/forecast_low_text_size" />
+
+        </LinearLayout>
+
+        <!-- Day 3 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/day3_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Wed"
+                android:textColor="@color/widget_text_primary"
+                android:textSize="@dimen/forecast_text_size" />
+
+            <ImageView
+                android:id="@+id/day3_icon"
+                android:layout_width="@dimen/forecast_icon_size"
+                android:layout_height="@dimen/forecast_icon_size"
+                android:layout_marginTop="4dp"
+                android:contentDescription="Day 3 weather"
+                android:src="@drawable/ic_weather_clear" />
+
+            <TextView
+                android:id="@+id/day3_high"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="--"
+                android:textColor="@color/widget_text_primary"
+                android:textSize="@dimen/forecast_text_size" />
+
+            <TextView
+                android:id="@+id/day3_low"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="--"
+                android:textColor="@color/widget_text_secondary"
+                android:textSize="@dimen/forecast_low_text_size" />
+
+        </LinearLayout>
+
+        <!-- Day 4 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/day4_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Thu"
+                android:textColor="@color/widget_text_primary"
+                android:textSize="@dimen/forecast_text_size" />
+
+            <ImageView
+                android:id="@+id/day4_icon"
+                android:layout_width="@dimen/forecast_icon_size"
+                android:layout_height="@dimen/forecast_icon_size"
+                android:layout_marginTop="4dp"
+                android:contentDescription="Day 4 weather"
+                android:src="@drawable/ic_weather_clear" />
+
+            <TextView
+                android:id="@+id/day4_high"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="--"
+                android:textColor="@color/widget_text_primary"
+                android:textSize="@dimen/forecast_text_size" />
+
+            <TextView
+                android:id="@+id/day4_low"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="--"
+                android:textColor="@color/widget_text_secondary"
+                android:textSize="@dimen/forecast_low_text_size" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
