@@ -32,6 +32,29 @@ class WeatherPrefs(context: Context) {
         get() = prefs.getString("weather_app_name", null)
         set(value) = prefs.edit().putString("weather_app_name", value).apply()
 
+    var refreshIntervalMinutes: Int
+        get() = prefs.getInt("refresh_interval_minutes", 30)
+        set(value) = prefs.edit().putInt("refresh_interval_minutes", value).apply()
+
+    var selectedFont: Int
+        get() = prefs.getInt("selected_font", FONT_SYSTEM)
+        set(value) = prefs.edit().putInt("selected_font", value).apply()
+
+    var usePixelIcons: Boolean
+        get() = prefs.getBoolean("use_pixel_icons", false)
+        set(value) = prefs.edit().putBoolean("use_pixel_icons", value).apply()
+
+    companion object {
+        const val FONT_SYSTEM = 0
+        const val FONT_JETBRAINS_MONO = 1
+        const val FONT_INSTRUMENT_SERIF = 2
+        const val FONT_PERMANENT_MARKER = 3
+        const val FONT_GOOGLE_SANS = 4
+        const val FONT_DS_DIGITAL = 5
+        const val FONT_OXANIUM = 6
+        const val FONT_DOTO = 7
+    }
+
     fun hasLocation(): Boolean = lastLat != 0f || lastLon != 0f
 
     fun saveWeatherData(data: WeatherData) {
