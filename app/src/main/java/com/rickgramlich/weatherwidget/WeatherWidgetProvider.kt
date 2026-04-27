@@ -20,6 +20,7 @@ class WeatherWidgetProvider : AppWidgetProvider() {
 
     companion object {
         private const val WORK_NAME = "weather_refresh"
+        private const val ACTION_REFRESH = "com.rickgramlich.weatherwidget.ACTION_REFRESH"
 
         fun updateAllWidgets(context: Context) {
             val manager = AppWidgetManager.getInstance(context)
@@ -30,15 +31,26 @@ class WeatherWidgetProvider : AppWidgetProvider() {
             val data = prefs.loadWeatherData()
             val views = WidgetLayoutBuilder.build(context, data)
 
-            val pendingIntent = buildTapIntent(context, prefs)
-            views.setOnClickPendingIntent(R.id.widget_root, pendingIntent)
+            // Current weather section → refresh
+            val refreshIntent = Intent(context, WeatherWidgetProvider::class.java).apply {
+                action = ACTION_REFRESH
+            }
+            val refreshPending = PendingIntent.getBroadcast(
+                context, 0, refreshIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+            views.setOnClickPendingIntent(R.id.current_section, refreshPending)
+
+            // Forecast section → open weather app
+            val appPending = buildAppIntent(context, prefs)
+            views.setOnClickPendingIntent(R.id.forecast_section, appPending)
 
             for (id in ids) {
                 manager.updateAppWidget(id, views)
             }
         }
 
-        private fun buildTapIntent(context: Context, prefs: WeatherPrefs): PendingIntent {
+        private fun buildAppIntent(context: Context, prefs: WeatherPrefs): PendingIntent {
             val weatherAppPackage = prefs.weatherAppPackage
             val launchIntent = if (weatherAppPackage != null) {
                 context.packageManager.getLaunchIntentForPackage(weatherAppPackage)
@@ -50,10 +62,36 @@ class WeatherWidgetProvider : AppWidgetProvider() {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
             return PendingIntent.getActivity(
-                context, 0, intent,
+                context, 1, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
         }
+
+        fun reschedulePeriodicRefresh(context: Context) {
+            val prefs = WeatherPrefs(context)
+            val intervalMinutes = prefs.refreshIntervalMinutes.toLong()
+
+            val request = PeriodicWorkRequestBuilder<WeatherWidgetWorker>(intervalMinutes, TimeUnit.MINUTES)
+                .setConstraints(
+                    Constraints.Builder()
+                        .setRequiredNetworkType(NetworkType.CONNECTED)
+                        .build()
+                )
+                .build()
+            WorkManager.getInstance(context).enqueueUniquePeriodicWork(
+                WORK_NAME,
+                ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE,
+                request
+            )
+        }
+    }
+
+    override fun onReceive(context: Context, intent: Intent) {
+        if (intent.action == ACTION_REFRESH) {
+            enqueueOneTimeRefresh(context)
+            return
+        }
+        super.onReceive(context, intent)
     }
 
     override fun onUpdate(
@@ -65,8 +103,19 @@ class WeatherWidgetProvider : AppWidgetProvider() {
         val data = prefs.loadWeatherData()
         val views = WidgetLayoutBuilder.build(context, data)
 
-        val pendingIntent = buildTapIntent(context, prefs)
-        views.setOnClickPendingIntent(R.id.widget_root, pendingIntent)
+        // Current weather section → refresh
+        val refreshIntent = Intent(context, WeatherWidgetProvider::class.java).apply {
+            action = ACTION_REFRESH
+        }
+        val refreshPending = PendingIntent.getBroadcast(
+            context, 0, refreshIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+        views.setOnClickPendingIntent(R.id.current_section, refreshPending)
+
+        // Forecast section → open weather app
+        val appPending = buildAppIntent(context, prefs)
+        views.setOnClickPendingIntent(R.id.forecast_section, appPending)
 
         for (id in appWidgetIds) {
             appWidgetManager.updateAppWidget(id, views)
@@ -76,7 +125,7 @@ class WeatherWidgetProvider : AppWidgetProvider() {
     }
 
     override fun onEnabled(context: Context) {
-        enqueuePeriodicRefresh(context)
+        reschedulePeriodicRefresh(context)
     }
 
     override fun onDisabled(context: Context) {
@@ -92,20 +141,5 @@ class WeatherWidgetProvider : AppWidgetProvider() {
             )
             .build()
         WorkManager.getInstance(context).enqueue(request)
-    }
-
-    private fun enqueuePeriodicRefresh(context: Context) {
-        val request = PeriodicWorkRequestBuilder<WeatherWidgetWorker>(30, TimeUnit.MINUTES)
-            .setConstraints(
-                Constraints.Builder()
-                    .setRequiredNetworkType(NetworkType.CONNECTED)
-                    .build()
-            )
-            .build()
-        WorkManager.getInstance(context).enqueueUniquePeriodicWork(
-            WORK_NAME,
-            ExistingPeriodicWorkPolicy.KEEP,
-            request
-        )
     }
 }

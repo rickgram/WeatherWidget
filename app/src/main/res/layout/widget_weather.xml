@@ -7,13 +7,15 @@
     android:orientation="horizontal"
     android:padding="0dp">
 
-    <!-- Current weather (left section) — wrap_content so it only takes what it needs -->
+    <!-- Current weather (left section) — tap to refresh -->
     <LinearLayout
+        android:id="@+id/current_section"
         android:layout_width="95dp"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
-        android:paddingEnd="4dp">
+        android:paddingEnd="4dp"
+        android:clickable="true">
 
         <ImageView
             android:id="@+id/current_icon"
@@ -22,15 +24,12 @@
             android:contentDescription="Current weather"
             android:src="@drawable/ic_weather_clear" />
 
-        <TextView
+        <ImageView
             android:id="@+id/current_temp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:text="--"
-            android:textColor="@color/widget_text_primary"
-            android:textSize="@dimen/current_temp_size"
-            android:textStyle="bold" />
+            android:contentDescription="Temperature" />
 
     </LinearLayout>
 
@@ -49,13 +48,15 @@
 
     </LinearLayout>
 
-    <!-- Forecast (right section) — takes remaining space -->
+    <!-- Forecast (right section) — tap to open weather app -->
     <LinearLayout
+        android:id="@+id/forecast_section"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="horizontal"
-        android:paddingStart="4dp">
+        android:paddingStart="4dp"
+        android:clickable="true">
 
         <!-- Day 1 (Today) -->
         <LinearLayout
@@ -65,13 +66,11 @@
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
-            <TextView
+            <ImageView
                 android:id="@+id/day1_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Today"
-                android:textColor="@color/widget_text_primary"
-                android:textSize="@dimen/forecast_text_size" />
+                android:contentDescription="Day 1" />
 
             <ImageView
                 android:id="@+id/day1_icon"
@@ -81,22 +80,18 @@
                 android:contentDescription="Day 1 weather"
                 android:src="@drawable/ic_weather_clear" />
 
-            <TextView
+            <ImageView
                 android:id="@+id/day1_high"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="--"
-                android:textColor="@color/widget_text_primary"
-                android:textSize="@dimen/forecast_text_size" />
+                android:contentDescription="Day 1 high" />
 
-            <TextView
+            <ImageView
                 android:id="@+id/day1_low"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="--"
-                android:textColor="@color/widget_text_secondary"
-                android:textSize="@dimen/forecast_low_text_size" />
+                android:contentDescription="Day 1 low" />
 
         </LinearLayout>
 
@@ -108,13 +103,11 @@
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
-            <TextView
+            <ImageView
                 android:id="@+id/day2_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tue"
-                android:textColor="@color/widget_text_primary"
-                android:textSize="@dimen/forecast_text_size" />
+                android:contentDescription="Day 2" />
 
             <ImageView
                 android:id="@+id/day2_icon"
@@ -124,22 +117,18 @@
                 android:contentDescription="Day 2 weather"
                 android:src="@drawable/ic_weather_clear" />
 
-            <TextView
+            <ImageView
                 android:id="@+id/day2_high"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="--"
-                android:textColor="@color/widget_text_primary"
-                android:textSize="@dimen/forecast_text_size" />
+                android:contentDescription="Day 2 high" />
 
-            <TextView
+            <ImageView
                 android:id="@+id/day2_low"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="--"
-                android:textColor="@color/widget_text_secondary"
-                android:textSize="@dimen/forecast_low_text_size" />
+                android:contentDescription="Day 2 low" />
 
         </LinearLayout>
 
@@ -151,13 +140,11 @@
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
-            <TextView
+            <ImageView
                 android:id="@+id/day3_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Wed"
-                android:textColor="@color/widget_text_primary"
-                android:textSize="@dimen/forecast_text_size" />
+                android:contentDescription="Day 3" />
 
             <ImageView
                 android:id="@+id/day3_icon"
@@ -167,22 +154,18 @@
                 android:contentDescription="Day 3 weather"
                 android:src="@drawable/ic_weather_clear" />
 
-            <TextView
+            <ImageView
                 android:id="@+id/day3_high"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="--"
-                android:textColor="@color/widget_text_primary"
-                android:textSize="@dimen/forecast_text_size" />
+                android:contentDescription="Day 3 high" />
 
-            <TextView
+            <ImageView
                 android:id="@+id/day3_low"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="--"
-                android:textColor="@color/widget_text_secondary"
-                android:textSize="@dimen/forecast_low_text_size" />
+                android:contentDescription="Day 3 low" />
 
         </LinearLayout>
 
@@ -194,13 +177,11 @@
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
-            <TextView
+            <ImageView
                 android:id="@+id/day4_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Thu"
-                android:textColor="@color/widget_text_primary"
-                android:textSize="@dimen/forecast_text_size" />
+                android:contentDescription="Day 4" />
 
             <ImageView
                 android:id="@+id/day4_icon"
@@ -210,22 +191,18 @@
                 android:contentDescription="Day 4 weather"
                 android:src="@drawable/ic_weather_clear" />
 
-            <TextView
+            <ImageView
                 android:id="@+id/day4_high"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="--"
-                android:textColor="@color/widget_text_primary"
-                android:textSize="@dimen/forecast_text_size" />
+                android:contentDescription="Day 4 high" />
 
-            <TextView
+            <ImageView
                 android:id="@+id/day4_low"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="--"
-                android:textColor="@color/widget_text_secondary"
-                android:textSize="@dimen/forecast_low_text_size" />
+                android:contentDescription="Day 4 low" />
 
         </LinearLayout>
 

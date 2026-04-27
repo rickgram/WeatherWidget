@@ -104,7 +104,103 @@ class MainActivity : AppCompatActivity() {
         }
 
         val appHint = TextView(this).apply {
-            text = "Tap above to change which app opens"
+            text = "Tap above to change which app opens\nwhen tapping the forecast"
+            textSize = 12f
+            setTextColor(0xFF666666.toInt())
+            gravity = Gravity.CENTER
+        }
+
+        // --- Refresh Interval ---
+        val sectionRefresh = sectionHeader("Refresh Interval")
+
+        val intervalOptions = listOf(15, 30, 60, 120, 240)
+        val intervalLabels = listOf("15 minutes", "30 minutes", "1 hour", "2 hours", "4 hours")
+
+        val refreshLabel = TextView(this).apply {
+            val current = prefs.refreshIntervalMinutes
+            val idx = intervalOptions.indexOf(current)
+            text = if (idx >= 0) intervalLabels[idx] else "$current minutes"
+            textSize = 16f
+            setTextColor(0xFF4FC3F7.toInt())
+            gravity = Gravity.CENTER
+            setPadding(0, 16, 0, 16)
+            setOnClickListener {
+                AlertDialog.Builder(this@MainActivity)
+                    .setTitle("Refresh Interval")
+                    .setItems(intervalLabels.toTypedArray()) { _, which ->
+                        val minutes = intervalOptions[which]
+                        prefs.refreshIntervalMinutes = minutes
+                        text = intervalLabels[which]
+                        WeatherWidgetProvider.reschedulePeriodicRefresh(this@MainActivity)
+                    }
+                    .show()
+            }
+        }
+
+        val refreshHint = TextView(this).apply {
+            text = "How often the widget fetches new weather data\nTap the current weather on the widget to refresh manually"
+            textSize = 12f
+            setTextColor(0xFF666666.toInt())
+            gravity = Gravity.CENTER
+        }
+
+        // --- Font Picker ---
+        val sectionFont = sectionHeader("Font")
+
+        val fontNames = listOf(
+            "System", "JetBrains Mono", "Instrument Serif", "Permanent Marker",
+            "Google Sans", "DS Digital", "Oxanium", "Doto"
+        )
+
+        val fontLabel = TextView(this).apply {
+            text = fontNames[prefs.selectedFont]
+            textSize = 16f
+            setTextColor(0xFF4FC3F7.toInt())
+            gravity = Gravity.CENTER
+            setPadding(0, 16, 0, 16)
+            setOnClickListener {
+                AlertDialog.Builder(this@MainActivity)
+                    .setTitle("Font")
+                    .setItems(fontNames.toTypedArray()) { _, which ->
+                        prefs.selectedFont = which
+                        text = fontNames[which]
+                        WeatherWidgetProvider.updateAllWidgets(this@MainActivity)
+                    }
+                    .show()
+            }
+        }
+
+        val fontHint = TextView(this).apply {
+            text = "Font used for all text in the widget"
+            textSize = 12f
+            setTextColor(0xFF666666.toInt())
+            gravity = Gravity.CENTER
+        }
+
+        // --- Icon Pack ---
+        val sectionIcons = sectionHeader("Icon Style")
+
+        val iconPackLabel = TextView(this).apply {
+            text = if (prefs.usePixelIcons) "Pixel" else "Default"
+            textSize = 16f
+            setTextColor(0xFF4FC3F7.toInt())
+            gravity = Gravity.CENTER
+            setPadding(0, 16, 0, 16)
+            setOnClickListener {
+                val options = arrayOf("Default", "Pixel")
+                AlertDialog.Builder(this@MainActivity)
+                    .setTitle("Icon Style")
+                    .setItems(options) { _, which ->
+                        prefs.usePixelIcons = which == 1
+                        text = options[which]
+                        WeatherWidgetProvider.updateAllWidgets(this@MainActivity)
+                    }
+                    .show()
+            }
+        }
+
+        val iconHint = TextView(this).apply {
+            text = "Pixel icons pair well with DS Digital font"
             textSize = 12f
             setTextColor(0xFF666666.toInt())
             gravity = Gravity.CENTER
@@ -120,9 +216,24 @@ class MainActivity : AppCompatActivity() {
         layout.addView(opacityHint)
         layout.addView(spacer(48))
         layout.addView(divider())
+        layout.addView(sectionFont)
+        layout.addView(fontLabel)
+        layout.addView(fontHint)
+        layout.addView(spacer(48))
+        layout.addView(divider())
+        layout.addView(sectionIcons)
+        layout.addView(iconPackLabel)
+        layout.addView(iconHint)
+        layout.addView(spacer(48))
+        layout.addView(divider())
         layout.addView(sectionApp)
         layout.addView(weatherAppLabel)
         layout.addView(appHint)
+        layout.addView(spacer(48))
+        layout.addView(divider())
+        layout.addView(sectionRefresh)
+        layout.addView(refreshLabel)
+        layout.addView(refreshHint)
 
         scrollView.addView(layout)
         setContentView(scrollView)
